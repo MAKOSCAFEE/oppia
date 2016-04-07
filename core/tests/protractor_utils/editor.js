@@ -64,7 +64,7 @@ var finishTutorial = function() {
 var navigateToMainTab = function() {
   element(by.css('.protractor-test-main-tab')).click();
   // Click a neutral element in order to dismiss any warnings.
-  browser.executeScript('arguments[0].click()',
+  browser.executeScript('return arguments[0].click()',
     element(by.css('.protractor-test-editor-neutral-element')));
   // Element(by.css('.protractor-test-editor-neutral-element')).click();
 };
