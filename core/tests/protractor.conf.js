@@ -34,7 +34,7 @@ var config = {
   //
   // A base URL for your application under test. Calls to protractor.get()
   // with relative paths will be prepended with this.
-  //baseUrl: 'http://localhost:4445',
+  baseUrl: 'http://localhost:9001',
 
   // Selector for the element housing the angular app - this defaults to
   // body, but is necessary if ng-app is on a descendant of <body>
@@ -62,11 +62,11 @@ var config = {
      * @param baseUrl
      * @param port
      */
-    global.goToUrl = function (relativeUrl, baseUrl, port) {
-      baseUrl = typeof(baseUrl) === 'undefined' ? BASE_URL : baseUrl;
-      port = typeof(port) === 'undefined' ? PORT : port;
-      browser.get(baseUrl + ':' + port + relativeUrl);
-    };
+    // global.goToUrl = function (relativeUrl, baseUrl, port) {
+    //   baseUrl = typeof(baseUrl) === 'undefined' ? BASE_URL : baseUrl;
+    //   port = typeof(port) === 'undefined' ? PORT : port;
+    //   browser.get(baseUrl + ':' + port + relativeUrl);
+    // };
     // At this point, global 'protractor' object will be set up, and jasmine
     // will be available. For example, you can add a Jasmine reporter with:
     //     jasmine.getEnv().addReporter(new jasmine.JUnitXmlReporter(
