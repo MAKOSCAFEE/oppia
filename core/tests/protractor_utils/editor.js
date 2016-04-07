@@ -68,7 +68,7 @@ var navigateToMainTab = function() {
     arguments[0].scrollIntoView();
   };
   var targetElement = element(
-    by.css('.protractor-test-editor-neutral-element');
+    by.css('.protractor-test-editor-neutral-element'));
   browser.executeScript(scrollIntoView, targetElement.getWebElement());
   // Element(by.css('.protractor-test-editor-neutral-element')).click();
 };
