@@ -64,12 +64,12 @@ var finishTutorial = function() {
 var navigateToMainTab = function() {
   element(by.css('.protractor-test-main-tab')).click();
   // Click a neutral element in order to dismiss any warnings.
-  var scrollIntoView = function (element) {
+  var scrollIntoView = function() {
     arguments[0].scrollIntoView();
   };
   var targetElement = element(
     by.css('.protractor-test-editor-neutral-element');
-  browser.executeScript(scrollIntoView, targetElement));
+  browser.executeScript(scrollIntoView, targetElement.getWebElement());
   // Element(by.css('.protractor-test-editor-neutral-element')).click();
 };
 
