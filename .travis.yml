@@ -10,7 +10,6 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - google-chrome-stable
-    - g++-4.8
 branches:
   only:
   - master
@@ -24,7 +23,6 @@ env:
   - RUN_BACKEND_TESTS=true RUN_FRONTEND_TESTS=false RUN_LINT=false REPORT_BACKEND_COVERAGE=true
   - RUN_E2E_TESTS=true
   global:
-  - CXX=g++-4.8
   - secure: jAJVoRwUcI5eq45v/xqc62lMKdE7ZLCr6PS+xTCDzzoxOpfdmjKuLbg1uDrFwip+Ynq/w4cHKKOlAx+ifwf4dQj0afRtVrz80MAJhl4HEtjzmG52kWd+0QdEns8wvmh8v5wrb1k8rVwi1i/Am/RKI0en3ZuURspgUAwAZE66/xwjYcGt4ObKareAeeEktVJxohxJHG9ov4tqkOwo1lXgr/cMLlwFUdLxKrRiyNi6530XVzN4lUBaQU3yjFLaNj3t77oxxTPho1RKaWpXd9qzNEcB/mowmMEX4hcw1ffg/pIj1AQtFrakqYeZ6SvOi93Jq1XABThea15/GGHGcJQd1ZZViVIxGLnx0uvX3GcvNraqYebaTJbaTbkLKh1ZQ0wvzzuL3HkWiXBi5mwAC7hqLO+tbg3rTl5fTWIoEvmLOLRVYqb534AFi5stH0M38ahGZsTHc9B7WUc5F6I58CprQzIzK13g6ipgBOBghHmzEWEiMF9CvyhdZjwQY0r8EjqUBYe1GGsQhjeFLvKNCsffikFAfrwycQlcQqDpY+jItoh3pZ7Y8+k55+EAYdYfgRNeJPXdF3ARS8/usz1ThehO5YD68siqWz+qrLKEKKeeYmEBYW7Y/QCbdNdsNC3ZXSMQh3fIsJ6SyAFZ44cZ4Q4J+5YSz2OggIyOHsCfG+DPN8Q=
   - secure: w07qaipgO7pITSZBbLylU6pZzGCKgZtoun2fjWO/EY3CvESUKIDf9/rgimKzFpYSfM6F80431aF0U83mFLwUlX5mXwwOZOk6OP6twvZsLy0DV4qZIXGeQXMq8eUHusgy8FEvKiKFOM9AVP6PvUzHccWrrYYUUTwsgI5hcJhhqL28hf0xrEuVzUzO88rl00558JQU3uEBFyquLHZShL3X4v5ioHsJq162gEDFiXSGP6OxalwQ5uN+hzimo6kuE3mNwJf9jah8dSK5ZygQXzppP7r9ietJ3GXSHWft54/y+2GF0YT/HLSqSHfAxWs72j4iRBbneKG3apTTGwuyiSWw4HPo3yO+9oxkN66Qvw+OrfsRFDYN9l5d+B5xqkJk9L7y+KZtcSSeUOpk9DZ2E03qRsuKDrEEBtjsRW9ky9U8+b5WUxsVJ4XR3dK5fx6W29j3u5XLuQg5cjjjWEXSwLgEo92aCKBLW7X0bxGVyq7bQfl+dXYAdDk6B5AesSOTXupJJLxGJXbnetUHQjHEZT09MvjzOtJZJC5pVYFi6mvf6YI6vJtBLj517ZwrV5e1fNqu8zohB1w7dnJbveUM57B7UfaqtkjLJ/tYrD3rD6zgn5jiYcKbqOBFv5mNHVhEBdN1fc+2PrUCk57A68vp3Kw6pKhs6cLgP6PPnjPiBb8zjvo=
 matrix:
