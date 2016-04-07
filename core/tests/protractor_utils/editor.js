@@ -71,7 +71,7 @@ var navigateToMainTab = function() {
     by.css('.protractor-test-editor-neutral-element'));
   browser.executeScript(scrollIntoView, targetElement.getWebElement());
   // Click a neutral element in order to dismiss any warnings.
-  //element(by.css('.protractor-test-editor-neutral-element')).click();
+  // element(by.css('.protractor-test-editor-neutral-element')).click();
 };
 
 var navigateToPreviewTab = function() {
