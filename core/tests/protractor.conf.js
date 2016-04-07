@@ -1,7 +1,7 @@
 var ScreenShotReporter = require('protractor-screenshot-reporter');
 
 // A reference configuration file.
-exports.config = {
+var config = {
   // ----- How to setup Selenium -----
   //
   // There are three ways to specify how to use Selenium. Specify one of the
@@ -187,3 +187,15 @@ exports.config = {
   // (0 if the tests passed or 1 if not).
   onCleanUp: function() {}
 };
+
+if (process.env.TRAVIS) {
+  config.sauceUser = process.env.SAUCE_USERNAME;
+  config.sauceKey = process.env.SAUCE_ACCESS_KEY;
+  config.capabilities = {
+    browserName: 'chrome', 
+    chromedriverVersion: '2.20',
+    'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
+    build: process.env.TRAVIS_BUILD_NUMBER
+  };
+}
+exports.config = config;
