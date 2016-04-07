@@ -63,14 +63,15 @@ var finishTutorial = function() {
 
 var navigateToMainTab = function() {
   element(by.css('.protractor-test-main-tab')).click();
-  // Click a neutral element in order to dismiss any warnings.
+
   var scrollIntoView = function() {
     arguments[0].scrollIntoView();
   };
   var targetElement = element(
     by.css('.protractor-test-editor-neutral-element'));
   browser.executeScript(scrollIntoView, targetElement.getWebElement());
-  // Element(by.css('.protractor-test-editor-neutral-element')).click();
+  // Click a neutral element in order to dismiss any warnings.
+  //element(by.css('.protractor-test-editor-neutral-element')).click();
 };
 
 var navigateToPreviewTab = function() {
@@ -1036,7 +1037,13 @@ var saveChanges = function(commitMessage) {
 };
 
 var discardChanges = function() {
-  element(by.css('.protractor-test-save-discard-toggle')).click();
+  var scrollIntoView = function() {
+    arguments[0].scrollIntoView();
+  };
+  var targetElement = element(
+    by.css('.protractor-test-save-discard-toggle'));
+  browser.executeScript(scrollIntoView, targetElement.getWebElement());
+  // Element(by.css('.protractor-test-save-discard-toggle')).click();
   element(by.css('.protractor-test-discard-changes')).click();
   browser.driver.switchTo().alert().accept();
   general.waitForSystem();
