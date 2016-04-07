@@ -160,7 +160,8 @@ if (process.env.TRAVIS) {
     'seleniumVersion': '2.48.2',
     'chromedriverVersion': '2.20',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    'build': process.env.TRAVIS_BUILD_NUMBER
+    'build': process.env.TRAVIS_BUILD_NUMBER,
+    'screen-resolution': '1200x1000'
   };
 } else {
   // ----- How to setup Selenium -----
