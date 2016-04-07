@@ -1,5 +1,11 @@
 var ScreenShotReporter = require('protractor-screenshot-reporter');
 
+var argv = require('minimist')(process.argv.slice(2));
+var IS_ANGULAR =  false;
+var PORT = argv.port || 9001;
+var BASE_URL = argv['base-url'] || 'http://localhost';
+console.log('[INFOS] Testing on ' + BASE_URL + ':' + PORT);
+
 // A reference configuration file.
 var config = {
   
@@ -18,10 +24,7 @@ var config = {
   // https://code.google.com/p/selenium/wiki/DesiredCapabilities
   // and
   // https://code.google.com/p/selenium/source/browse/javascript/webdriver/capabilities.js
-  capabilities: {
-    browserName: 'chrome'
-  },
-
+  
   // If you would like to run more than one instance of webdriver on the same
   // tests, use multiCapabilities, which takes an array of capabilities.
   // If this is specified, capabilities will be ignored.
@@ -31,7 +34,7 @@ var config = {
   //
   // A base URL for your application under test. Calls to protractor.get()
   // with relative paths will be prepended with this.
-  baseUrl: 'http://localhost:4445',
+  //baseUrl: 'http://localhost:4445',
 
   // Selector for the element housing the angular app - this defaults to
   // body, but is necessary if ng-app is on a descendant of <body>
@@ -42,6 +45,28 @@ var config = {
   // You can specify a file containing code to run by setting onPrepare to
   // the filename string.
   onPrepare: function() {
+    browser.ignoreSynchronization = !IS_ANGULAR;
+    /**
+     * Set on/off angular synchronisation of protractor
+     * Use the beforeEachIsAngular helper in `test/e2e/utils.js`
+     * @param flag
+     */
+    global.isAngularSite = function (flag) {
+      browser.ignoreSynchronization = !flag;
+    };
+    /**
+     * Helper to use instead of directly `browser.get` so that you don't bother about the port
+     * baseUrl and port are optional and can be overriden globally when launching protractor
+     * with the flags --base-url and --port
+     * @param relativeUrl
+     * @param baseUrl
+     * @param port
+     */
+    global.goToUrl = function (relativeUrl, baseUrl, port) {
+      baseUrl = typeof(baseUrl) === 'undefined' ? BASE_URL : baseUrl;
+      port = typeof(port) === 'undefined' ? PORT : port;
+      browser.get(baseUrl + ':' + port + relativeUrl);
+    };
     // At this point, global 'protractor' object will be set up, and jasmine
     // will be available. For example, you can add a Jasmine reporter with:
     //     jasmine.getEnv().addReporter(new jasmine.JUnitXmlReporter(
@@ -192,6 +217,10 @@ if (process.env.TRAVIS) {
   // The tests will be run remotely using SauceLabs.
   config.sauceUser = null;
   config.sauceKey = null;
+  config.capabilities = {
+    browserName: 'chrome'
+  };
+
 
   // The address of a running selenium server. If specified, Protractor will
   // connect to an already running instance of selenium. This usually looks like
