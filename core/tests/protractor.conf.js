@@ -17,6 +17,9 @@ var config = {
   suites: {
     full: 'protractor/*.js'
   },
+  // The timeout for each script run on the browser. This should be longer
+  // than the maximum time your application needs to stabilize between tasks.
+  allScriptsTimeout: 120000,
 
   // ----- Capabilities to be passed to the webdriver instance ----
   //
@@ -45,15 +48,6 @@ var config = {
   // You can specify a file containing code to run by setting onPrepare to
   // the filename string.
   onPrepare: function() {
-    browser.ignoreSynchronization = !IS_ANGULAR;
-    /**
-     * Set on/off angular synchronisation of protractor
-     * Use the beforeEachIsAngular helper in `test/e2e/utils.js`
-     * @param flag
-     */
-    global.isAngularSite = function (flag) {
-      browser.ignoreSynchronization = !flag;
-    };
     /**
      * Helper to use instead of directly `browser.get` so that you don't bother about the port
      * baseUrl and port are optional and can be overriden globally when launching protractor
@@ -62,15 +56,6 @@ var config = {
      * @param baseUrl
      * @param port
      */
-    // global.goToUrl = function (relativeUrl, baseUrl, port) {
-    //   baseUrl = typeof(baseUrl) === 'undefined' ? BASE_URL : baseUrl;
-    //   port = typeof(port) === 'undefined' ? PORT : port;
-    //   browser.get(baseUrl + ':' + port + relativeUrl);
-    // };
-    // At this point, global 'protractor' object will be set up, and jasmine
-    // will be available. For example, you can add a Jasmine reporter with:
-    //     jasmine.getEnv().addReporter(new jasmine.JUnitXmlReporter(
-    //         'outputdir/', true, true));
 
     // This is currently pulled out into a flag because it sometimes obscures
     // the actual protractor error logs and does not close the browser after
