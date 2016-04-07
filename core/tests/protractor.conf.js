@@ -1,9 +1,8 @@
 var ScreenShotReporter = require('protractor-screenshot-reporter');
 
-var argv = require('minimist')(process.argv.slice(2));
 var IS_ANGULAR =  false;
-var PORT = argv.port || 9001;
-var BASE_URL = argv['base-url'] || 'http://localhost';
+var PORT = 9001;
+var BASE_URL = 'http://localhost';
 console.log('[INFOS] Testing on ' + BASE_URL + ':' + PORT);
 
 // A reference configuration file.
@@ -48,14 +47,6 @@ var config = {
   // You can specify a file containing code to run by setting onPrepare to
   // the filename string.
   onPrepare: function() {
-    /**
-     * Helper to use instead of directly `browser.get` so that you don't bother about the port
-     * baseUrl and port are optional and can be overriden globally when launching protractor
-     * with the flags --base-url and --port
-     * @param relativeUrl
-     * @param baseUrl
-     * @param port
-     */
 
     // This is currently pulled out into a flag because it sometimes obscures
     // the actual protractor error logs and does not close the browser after

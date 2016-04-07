@@ -64,7 +64,9 @@ var finishTutorial = function() {
 var navigateToMainTab = function() {
   element(by.css('.protractor-test-main-tab')).click();
   // Click a neutral element in order to dismiss any warnings.
-  element(by.css('.protractor-test-editor-neutral-element')).click();
+  WebElement targetElement = driver.findElement(by.css('.protractor-test-editor-neutral-element'));
+  browser.executeScript('arguments[0].click()', targetElement); 
+  //element(by.css('.protractor-test-editor-neutral-element')).click();
 };
 
 var navigateToPreviewTab = function() {
@@ -992,7 +994,7 @@ var setFirstState = function(stateName) {
       element(by.cssContainingText('option', stateName)).click();
   });
 };
-
+   
 var enableParameters = function() {
   runFromSettingsTab(function() {
     element(by.css('.protractor-test-enable-parameters')).click();

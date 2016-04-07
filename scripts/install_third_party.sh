@@ -31,7 +31,6 @@ install_node_module gulp-util 3.0.7
 install_node_module jscs 2.3.0
 install_node_module gulp-sourcemaps 1.6.0
 install_node_module gulp-minify 0.0.5
-install_node_module minimist 1.2.0
 
 # Download and install Skulpt. Skulpt is built using a Python script included
 # within the Skulpt repository (skulpt.py). This script normally requires
