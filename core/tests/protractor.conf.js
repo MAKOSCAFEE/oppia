@@ -157,12 +157,12 @@ if (process.env.TRAVIS) {
   config.capabilities = {
     'name': 'oppia',
     'browserName': 'chrome',
-    'seleniumVersion': '2.48.2',
-    'chromedriverVersion': '2.20',
+    'seleniumVersion': '2.53.0',
+    'chromedriverVersion': '2.21',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     'build': process.env.TRAVIS_BUILD_NUMBER,
     'platform': 'OS X 10.10',
-    'screen-resolution': '1600x1200'
+    'screen-resolution': '2048x1536'
   };
 } else {
   // ----- How to setup Selenium -----
