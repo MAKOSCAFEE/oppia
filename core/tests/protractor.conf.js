@@ -161,7 +161,8 @@ if (process.env.TRAVIS) {
     'chromedriverVersion': '2.20',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     'build': process.env.TRAVIS_BUILD_NUMBER,
-    'screen-resolution': '1200x1000'
+    'platform': 'Windows 8',
+    'screen-resolution': '1280x1024'
   };
 } else {
   // ----- How to setup Selenium -----
