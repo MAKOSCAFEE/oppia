@@ -108,7 +108,7 @@ var config = {
 
     // Set a wide enough window size for the navbar in the gallery to display
     // fully.
-    browser.driver.manage().window().setSize(1200, 1000);
+    browser.driver.manage().window().setSize(1920, 1200);
   },
 
   // The params object will be passed directly to the protractor instance,
@@ -183,8 +183,8 @@ if (process.env.TRAVIS) {
     'chromedriverVersion': '2.20',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     'build': process.env.TRAVIS_BUILD_NUMBER
-    //'platform': 'OS X 10.10',
-    //'screen-resolution': '2048x1536'
+    'platform': 'OS X 10.10',
+    'screen-resolution': '1920x1200'
   };
 } else {
   // Additional command line options to pass to selenium. For example,
