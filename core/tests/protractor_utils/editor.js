@@ -1037,13 +1037,14 @@ var saveChanges = function(commitMessage) {
 };
 
 var discardChanges = function() {
-  var scrollIntoView = function() {
-    arguments[0].scrollIntoView();
-  };
-  var targetElement = element(
-    by.css('.protractor-test-save-discard-toggle'));
-  browser.executeScript(scrollIntoView, targetElement.getWebElement());
-  // Element(by.css('.protractor-test-save-discard-toggle')).click();
+  // This was meant to navigate to by scroll view.
+  // var scrollIntoView = function() {
+  //   arguments[0].scrollIntoView();
+  // };
+  // var targetElement = element(
+  //   by.css('.protractor-test-save-discard-toggle'));
+  // browser.executeScript(scrollIntoView, targetElement.getWebElement());
+  element(by.css('.protractor-test-save-discard-toggle')).click();
   element(by.css('.protractor-test-discard-changes')).click();
   browser.driver.switchTo().alert().accept();
   general.waitForSystem();
