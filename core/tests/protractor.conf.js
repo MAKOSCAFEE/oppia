@@ -182,9 +182,9 @@ if (process.env.TRAVIS) {
     'seleniumVersion': '2.53.0',
     'chromedriverVersion': '2.21',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
-    'build': process.env.TRAVIS_BUILD_NUMBER,
-    'platform': 'OS X 10.10',
-    'screen-resolution': '2048x1536'
+    'build': process.env.TRAVIS_BUILD_NUMBER
+    //'platform': 'OS X 10.10',
+    //'screen-resolution': '2048x1536'
   };
 } else {
   // Additional command line options to pass to selenium. For example,
