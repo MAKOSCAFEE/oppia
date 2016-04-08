@@ -296,7 +296,12 @@ var MultiSelectEditor = function(elem) {
     },
     expectCurrentSelectionToBe: function(expectedCurrentSelection) {
       // Open the dropdown menu.
-      elem.element(by.css('.dropdown-toggle')).click();
+      // elem.element(by.css('.dropdown-toggle')).click();
+      var scrollIntoView = function() {
+        arguments[0].scrollIntoView();
+      };
+      var targetElement = element(by.css('.dropdown-toggle'));
+      browser.executeScript(scrollIntoView, targetElement.getWebElement());
 
       // Find the selected elements.
       elem.element(by.css('.dropdown-menu'))
