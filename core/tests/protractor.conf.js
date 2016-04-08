@@ -179,8 +179,8 @@ if (process.env.TRAVIS) {
   config.capabilities = {
     'name': 'oppia',
     'browserName': 'chrome',
-    'seleniumVersion': '2.53.0',
-    'chromedriverVersion': '2.21',
+    'seleniumVersion': '2.49.0',
+    'chromedriverVersion': '2.20',
     'tunnel-identifier': process.env.TRAVIS_JOB_NUMBER,
     'build': process.env.TRAVIS_BUILD_NUMBER
     //'platform': 'OS X 10.10',
