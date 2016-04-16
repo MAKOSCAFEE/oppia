@@ -102,6 +102,8 @@ trap cleanup EXIT
 while ! nc -vz localhost 4444; do sleep 1; done
 while ! nc -vz localhost 9001; do sleep 1; done
 
+sleep 5
+
 # Delete outdated screenshots
 if [ -d "../protractor-screenshots" ]; then
   rm -r ../protractor-screenshots

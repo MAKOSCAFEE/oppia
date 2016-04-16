@@ -105,7 +105,8 @@ var RichTextEditor = function(elem) {
     elem.all(by.model('html')).first().sendKeys(text);
   };
   var _clickToolbarButton = function(buttonName) {
-    elem.element(by.css('[name="' + buttonName + '"]')).click();
+    var myElement = elem.element(by.css('[name="' + buttonName + '"]'));
+    browser.executeScript('arguments[0].click()', myElement);
   };
   var _clearContent = function() {
     expect(elem.all(by.model('html')).first().isPresent()).toBe(true);
