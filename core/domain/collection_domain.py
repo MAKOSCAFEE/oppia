@@ -15,7 +15,6 @@
 # limitations under the License.
 
 """Domain objects for a collection and its constituents.
-
 Domain objects capture domain-specific logic and are agnostic of how the
 objects they represent are stored. All methods and properties in this file
 should therefore be independent of the specific storage models used.
@@ -38,7 +37,9 @@ COLLECTION_PROPERTY_LANGUAGE_CODE = 'language_code'
 COLLECTION_PROPERTY_TAGS = 'tags'
 COLLECTION_NODE_PROPERTY_PREREQUISITE_SKILLS = 'prerequisite_skills'
 COLLECTION_NODE_PROPERTY_ACQUIRED_SKILLS = 'acquired_skills'
-
+COLLECTION_SKILL_PROPERTY_NAME = 'property_name'
+COLLECTION_SKILL_PROPERTY_ADD_QUESTION = 'add_question'
+COLLECTION_SKILL_PROPERTY_DELETE_QUESTION = 'delete_question'
 # This takes an additional 'exploration_id' parameter.
 CMD_ADD_COLLECTION_NODE = 'add_collection_node'
 # This takes an additional 'exploration_id' parameter.
@@ -51,11 +52,16 @@ CMD_EDIT_COLLECTION_PROPERTY = 'edit_collection_property'
 CMD_EDIT_COLLECTION_NODE_PROPERTY = 'edit_collection_node_property'
 # This takes additional 'from_version' and 'to_version' parameters for logging.
 CMD_MIGRATE_SCHEMA_TO_LATEST_VERSION = 'migrate_schema_to_latest_version'
+# This takes an additional ‘skill_id’ parameter
+CMD_ADD_COLLECTION_SKILL = 'add_collection_skill'
+# This takes additional parameters ‘skill_id’, ‘property_name’, and ‘new_value’
+CMD_EDIT_COLLECTION_SKILL_PROPERTY = 'edit_collection_skill_property'
+# Takes an additional ‘skill_id’ parameter in change.new_value
+CMD_DELETE_COLLECTION_SKILL = 'delete_collection_skill'
 
 
 class CollectionChange(object):
     """Domain object class for a change to a collection.
-
     IMPORTANT: Ensure that all changes to this class (and how these cmds are
     interpreted in general) preserve backward-compatibility with the
     collection snapshots in the datastore. Do not modify the definitions of
@@ -71,12 +77,14 @@ class CollectionChange(object):
         COLLECTION_PROPERTY_OBJECTIVE, COLLECTION_PROPERTY_LANGUAGE_CODE,
         COLLECTION_PROPERTY_TAGS)
 
+    COLLECTION_SKILL_PROPERTIES = (
+        COLLECTION_SKILL_PROPERTY_NAME, COLLECTION_SKILL_PROPERTY_ADD_QUESTION,
+        COLLECTION_SKILL_PROPERTY_DELETE_QUESTION)
+
     def __init__(self, change_dict):
         """Initializes an CollectionChange object from a dict.
-
         change_dict represents a command. It should have a 'cmd' key, and one
         or more other keys. The keys depend on what the value for 'cmd' is.
-
         The possible values for 'cmd' are listed below, together with the other
         keys in the dict:
         - 'add_collection_node' (with exploration_id)
@@ -86,7 +94,10 @@ class CollectionChange(object):
         - 'edit_collection_property' (with property_name, new_value and,
             optionally, old_value)
         - 'migrate_schema' (with from_version and to_version)
-
+        - 'add_collection_skill' (with skill_id)
+        - 'edit_collection_skill_property' (with skill_id, property_name and,
+            new_value)
+        - 'delete_collection_skill' (with skill_id)
         For a collection node, property_name must be one of
         COLLECTION_NODE_PROPERTIES. For a collection, property_name must be
         one of COLLECTION_PROPERTIES.
@@ -117,6 +128,18 @@ class CollectionChange(object):
         elif self.cmd == CMD_MIGRATE_SCHEMA_TO_LATEST_VERSION:
             self.from_version = change_dict['from_version']
             self.to_version = change_dict['to_version']
+        elif self.cmd == CMD_ADD_COLLECTION_SKILL:
+            self.skill_id = change_dict['skill_id']
+        elif self.cmd == CMD_EDIT_COLLECTION_SKILL_PROPERTY:
+            if (change_dict['property_name'] not in
+                    self.COLLECTION_SKILL_PROPERTIES):
+                raise Exception('Invalid change_dict: %s' % change_dict)
+            self.skill_id = change_dict['skill_id']
+            self.property_name = change_dict['property_name']
+            self.new_value = change_dict['new_value']
+            self.old_value = change_dict.get('old_value')
+        elif self.cmd == CMD_DELETE_COLLECTION_SKILL:
+            self.skill_id = change_dict['skill_id']
         else:
             raise Exception('Invalid change_dict: %s' % change_dict)
 
@@ -167,7 +190,6 @@ class CollectionNode(object):
 
     def __init__(self, exploration_id, prerequisite_skills, acquired_skills):
         """Constructs a new CollectionNode object.
-
         Args:
         - exploration_id: A valid ID of an exploration referenced by this node.
         - prerequisite_skills: A list of skills (strings).
@@ -261,14 +283,12 @@ class CollectionNode(object):
 
 class CollectionSkill(object):
     """Domain object describing a skill in the collection.
-
     The skill contains the skill id, the human readable name, and the list of
     question IDs associated to the skill.
     """
 
     def __init__(self, skill_id, name, question_ids):
         """Constructs a new CollectionSkill object.
-
         Args:
             skill_id: int. the skill ID.
             name: str. the displayed name of the skill.
@@ -296,6 +316,38 @@ class CollectionSkill(object):
 
     # TODO(wxy): validation, and other skill functions go here
 
+    def _find_question_id_index(self, question_id):
+        for ind, _question_id in enumerate(self.question_ids):
+            if _question_id == question_id:
+                return ind
+        return None
+
+    def set_name(self, skill_name):
+        self.name = skill_name
+
+    def add_question(self, question_id):
+        self.question_ids.append(question_id)
+
+    def delete_question(self, question_id):
+        question_id_index = self._find_question_id_index(question_id)
+        if question_id_index is None:
+            raise ValueError(
+                'Question is not in the list of this skill: %s' %
+                question_id)
+        del self.question_ids[question_id_index]
+
+    def get_question_ids(self):
+        return self.question_ids
+
+    def validate(self, strict=True):
+        if not isinstance(self.name, basestring):
+            raise utils.ValidationError(
+                'Expected skill name to be a string, received %s'
+                % self.name)
+        utils.require_valid_name(
+            self.name, 'the skill name', allow_empty=True)
+
+
 
 class Collection(object):
     """Domain object for an Oppia collection."""
@@ -306,7 +358,6 @@ class Collection(object):
                  created_on=None, last_updated=None):
         """Constructs a new collection given all the information necessary to
         represent a collection.
-
         Note: The schema_version represents the version of any underlying
         dictionary or list structures stored within the collection. In
         particular, the schema for CollectionNodes is represented by this
@@ -395,7 +446,6 @@ class Collection(object):
     @classmethod
     def _convert_v1_dict_to_v2_dict(cls, collection_dict):
         """Converts a v1 collection dict into a v2 collection dict.
-
         Adds a language code, and tags.
         """
         collection_dict['schema_version'] = 2
@@ -406,7 +456,6 @@ class Collection(object):
     @classmethod
     def _convert_v2_dict_to_v3_dict(cls, collection_dict):
         """Converts a v2 collection dict into a v3 collection dict.
-
         No changes to dict structure.
         """
         collection_dict['schema_version'] = 3
@@ -456,7 +505,6 @@ class Collection(object):
     def _convert_collection_contents_v2_dict_to_v3_dict(
             cls, collection_contents):
         """Converts from version 2 to 3.
-
         Adds a skills dict and skill id counter. Gets skills in
         prerequisite_skills and acquired_skills in nodes, and assigns them
         integer IDs.
@@ -508,7 +556,6 @@ class Collection(object):
         """Converts the states blob contained in the given
         versioned_collection_contents dict from current_version to
         current_version + 1.
-
         Note that the versioned_collection_contents being passed in is modified
         in-place.
         """
@@ -668,6 +715,12 @@ class Collection(object):
                 return ind
         return None
 
+    def _find_skill(self, skill_id):
+        for ind, skill in enumerate(self.skills):
+            if skill.id == skill_id:
+                return ind
+        return None
+
     def get_node(self, exploration_id):
         """Retrieves a collection node from the collection based on an
         exploration ID.
@@ -691,6 +744,38 @@ class Collection(object):
                 'Exploration is not part of this collection: %s' %
                 exploration_id)
         del self.nodes[node_index]
+
+    def skills(self):
+        """Retrieves all skill domain objects from the skills list in a this
+        collection.
+        """
+        return self.skills
+
+    def get_skill(self, skill_id):
+        """Retrieves the skill domain object from the skills list based on the
+        skill id.
+        """
+        for skill in self.skills:
+            if skill.id == skill_id:
+                return skill
+        return None
+
+    def add_skill(self, skill_id):
+        """Adds the new skill domain object."""
+        if self.get_skill(skill_id) is not None:
+            raise ValueError(
+                'Skill is already part of this collection: %s' %
+                skill_id)
+        self.skills.append(self.get_skill(skill_id))
+
+    def delete_skill(self, skill_id):
+        """Deletes the skill from the skills list."""
+        skill_index = self._find_skill(skill_id)
+        if skill_index is None:
+            raise ValueError(
+                'Skill is not part of this collection: %s' %
+                skill_id)
+        del self.skills[skill_index]
 
     def validate(self, strict=True):
         """Validates all properties of this collection and its constituents."""
@@ -880,10 +965,8 @@ class CollectionSummary(object):
 
     def is_editable_by(self, user_id=None):
         """Checks if a given user may edit the collection.
-
         Args:
             user_id: str. User id of the user.
-
         Returns:
             bool. Whether the given user may edit the collection.
         """
