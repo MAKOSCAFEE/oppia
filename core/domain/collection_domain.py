@@ -347,6 +347,11 @@ class CollectionSkill(object):
         utils.require_valid_name(
             self.name, 'the skill name', allow_empty=True)
 
+        if strict:
+            if not self.name:
+                raise utils.ValidationError(
+                    'A name must be specified for the skill.')
+
 
 
 class Collection(object):
