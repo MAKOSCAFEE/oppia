@@ -37,6 +37,7 @@ oppia.directive('editorNavigation', [
             threadDataService, siteAnalyticsService,
             explorationContextService, windowDimensionsService) {
           $scope.postTutorialHelpPopoverIsShown = false;
+          $scope.username = GLOBALS.username;
           $scope.isLargeScreen = (windowDimensionsService.getWidth() >= 1024);
 
           $scope.$on('openPostTutorialHelpPopover', function() {

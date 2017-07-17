@@ -36,6 +36,9 @@ oppia.directive('collectionEditorNavbar', [
             EVENT_COLLECTION_INITIALIZED, EVENT_COLLECTION_REINITIALIZED,
             EVENT_UNDO_REDO_SERVICE_CHANGE_APPLIED) {
           $scope.collectionId = GLOBALS.collectionId;
+          $scope.SHOW_COLLECTION_NAVIGATION_TAB_HISTORY = GLOBALS.SHOW_COLLECTION_NAVIGATION_TAB_HISTORY;
+          $scope.SHOW_COLLECTION_NAVIGATION_TAB_STATS = GLOBALS.SHOW_COLLECTION_NAVIGATION_TAB_STATS;
+          $scope.username = GLOBALS.username;
           $scope.collection = CollectionEditorStateService.getCollection();
           $scope.collectionRights = (
             CollectionEditorStateService.getCollectionRights());
